@@ -1,0 +1,53 @@
+1. ZIP (.zip) - um dos formatos de compactação mais populares e amplamente suportados.
+2. RAR (.rar) - um formato de compactação proprietário que oferece uma boa taxa de compactação e recursos de segurança.
+3. 7Z (.7z) - um formato de compactação aberto que oferece uma alta taxa de compactação e recursos de segurança.
+
+4. TAR (.tar) - um formato de arquivo que combina vários arquivos em um único arquivo, sem compactação.
+5. GZIP (.gz) - um formato de compactação que usa o algoritmo DEFLATE para compactar arquivos.
+6. BZIP2 (.bz2) - um formato de compactação que usa o algoritmo Burrows-Wheeler para compactar arquivos.
+7. XZ (.xz) - um formato de compactação que usa o algoritmo LZMA2 para compactar arquivos.
+8. LZMA (.lzma) - um formato de compactação que usa o algoritmo LZMA para compactar arquivos.
+9. CAB (.cab) - um formato de compactação usado pela Microsoft para distribuir software e atualizações.
+10. JAR (.jar) - um formato de arquivo que combina vários arquivos em um único arquivo, com compactação opcional.
+11. TAR.GZ (.tar.gz) - um formato de arquivo que combina vários arquivos em um único arquivo, com compactação GZIP.
+12. TAR.BZ2 (.tar.bz2) - um formato de arquivo que combina vários arquivos em um único arquivo, com compactação BZIP2.
+13. TGZ (.tgz) - um formato de arquivo que combina vários arquivos em um único arquivo, com compactação GZIP.
+14. ISO (.iso) - um formato de arquivo que representa uma imagem de disco óptico.
+15. ARJ (.arj) - um formato de compactação proprietário que foi popular no passado.
+
+
+
+Fluxo_Etiquetas Atendidas no Periodo =
+var vDataIn = MIN(dCalendario[Data])
+var vDataFim = MAX(dCalendario[Data])
+RETURN
+SUMX(
+    'Ferramentais Cadastrados',
+    CALCULATE(
+        COUNTROWS('Etiquetas TPM'),
+        FILTER(
+            ALL('Etiquetas TPM'),
+            'Etiquetas TPM'[Title] = 'Ferramentais Cadastrados'[PN] &&
+            'Etiquetas TPM'[Status] = "Concluída" &&
+            'Etiquetas TPM'[DatadeConclusão]<=vDataFim
+        )))
+
+......................................................................
+
+Fluxo_Etiquetas Atendidas no Periodo =
+VAR vDataIn = MIN(dCalendario[Data])
+var vDataFim = MAX(dCalendario[Data])
+RETURN
+SUMX(
+    'Ferramentais Cadastrados',
+    CALCULATE(
+        COUNTROWS('Etiquetas TPM'),
+        FILTER(
+            ALL('Etiquetas TPM'),
+            'Etiquetas TPM'[Title] = 'Ferramentais Cadastrados'[PN] &&
+            'Etiquetas TPM'[Status] = "Concluída" &&
+            'Etiquetas TPM'[DatadeConclusão] >= vDataIn &&
+            'Etiquetas TPM'[DatadeConclusão] <= vDataFim
+        )
+    )
+)
