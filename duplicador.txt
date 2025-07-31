@@ -1,0 +1,66 @@
+@echo off
+setlocal enabledelayedexpansion
+
+:: Solicita o nome do arquivo
+set /p "arquivo=Digite o nome do arquivo (com extensao): "
+
+:: Verifica se o arquivo existe
+if not exist "%arquivo%" (
+    echo Arquivo "%arquivo%" não encontrado.
+    pause
+    exit /b
+)
+
+:: Solicita a quantidade de cópias
+set /p "copias=Digite a quantidade de copias que deseja gerar: "
+
+:: Extrai o nome base e a extensão
+for %%F in ("%arquivo%") do (
+    set "nome_base=%%~nF"
+    set "extensao=%%~xF"
+)
+
+:: Extrai o prefixo e sufixo do nome, separando a parte da linha
+for /f "tokens=1,2,3 delims=_" %%a in ("!nome_base!") do (
+    set "prefixo=%%a_%%b"
+    set "linha=%%c"
+    set "sufixo="
+)
+
+:: Se houver mais partes depois da linha, adiciona ao sufixo
+set "resto=!nome_base:%prefixo%_!linha!=!"
+if not "!resto!"=="" (
+    set "sufixo=!resto!"
+)
+
+
+:: Inicializa o valor da linha
+set /a valor=10
+
+set /a limite=%copias%-1
+
+:: Loop para criar as cópias
+for /L %%i in (1,1,%limite%) do (
+    set /a valor+=10
+
+    :: Monta o novo nome substituindo apenas a parte da linha
+    set "novo_nome="
+    for /f "tokens=1,2,3,* delims=_" %%a in ("%arquivo%") do (
+        set "novo_nome=%%a_%%b_%%c_!valor!_%"
+    )
+
+    :: Remove a extensão do nome original
+    for %%f in ("%arquivo%") do set "extensao=%%~xf"
+
+    :: Adiciona a extensão ao novo nome
+    set "novo_nome=!novo_nome!RA!!extensao!"
+
+    :: Copia o arquivo com o novo nome
+    copy "%arquivo%" "!novo_nome!" >nul
+    echo Arquivo gerado: !novo_nome!
+)
+
+
+echo.
+echo Processo concluido.
+pause

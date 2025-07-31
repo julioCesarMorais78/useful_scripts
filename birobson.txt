@@ -1,0 +1,26 @@
+@echo off
+:: Abrir sistemas
+start "" "https://safeworkplace.embraer.com.br/administration?page=AT"
+start "" "http://p3e.emb/#/login"
+start "" "https://pbi.embraer.com.br/#/idea-add/add"
+start "" "https://esolve.embraer.com.br/form"
+
+:: Abrir documentos
+cd "C:\Users\jcmorais\OneDrive - Embraer\Desktop\39067\2_Aditiva\1_Documentos\02_BI_Robson"
+start "" "Instrucoes.txt"
+start "" "Base_atualizarNoBI.png"
+
+:: Limpar arquivos antigos
+cd "C:\Users\jcmorais\Downloads"
+del /Q "Data-Export.csv"
+del /Q "esolve_search*.csv"
+del /Q "Export_Kaizen.xlsx"
+del /Q "Export_PBI*.xlsx"
+
+:: Criar log de execução
+echo Script executado com sucesso em %date% às %time% >> "C:\Users\jcmorais\Downloads\log_execucao.txt"
+
+:: Mensagem final
+echo "Concluído com sucesso"
+timeout /t 8
+exit
